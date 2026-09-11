@@ -28,7 +28,7 @@ jobs:
           echo "pnpm version: $(pnpm -v)"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run build
         run: pnpm --filter @unipat-ai/file-preview run build

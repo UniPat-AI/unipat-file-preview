@@ -11,7 +11,7 @@
     "@unipat/file-preview-contracts": "workspace:*",
     "@unipat/file-preview-core": "workspace:*",
     "@unipat/file-preview-node": "workspace:*",
-    "@unipat/file-preview-react": "workspace:*",
+    "@unipat-ai/file-preview": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

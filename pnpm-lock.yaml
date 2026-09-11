@@ -28,6 +28,9 @@ importers:
 
   examples/react-web:
     dependencies:
+      '@unipat-ai/file-preview':
+        specifier: workspace:*
+        version: link:../../packages/react
       '@unipat/file-preview-contracts':
         specifier: workspace:*
         version: link:../../contracts
@@ -37,9 +40,6 @@ importers:
       '@unipat/file-preview-node':
         specifier: workspace:*
         version: link:../../packages/node
-      '@unipat/file-preview-react':
-        specifier: workspace:*
-        version: link:../../packages/react
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -88,12 +88,6 @@ importers:
 
   packages/react:
     dependencies:
-      '@unipat/file-preview-contracts':
-        specifier: workspace:*
-        version: link:../../contracts
-      '@unipat/file-preview-core':
-        specifier: workspace:*
-        version: link:../core
       pdfjs-dist:
         specifier: ^4.6.82
         version: 4.10.38
