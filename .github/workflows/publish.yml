@@ -1,16 +1,20 @@
-name: Publish Package
+name: Publish to GitHub Packages
 
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'npm 发布 tag (如 latest, beta)'
+        description: '发布 tag (如 latest, beta)'
         required: false
         default: 'latest'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   publish:
-    name: Build & Publish to npm
+    name: Build & Publish to GitHub Packages
     runs-on: [self-hosted, linux]
     steps:
       - name: Checkout repository
@@ -32,10 +36,11 @@ jobs:
       - name: Run tests
         run: pnpm --filter @unipat-ai/file-preview run test
 
-      - name: Publish to npm
+      - name: Publish to GitHub Packages
         run: |
           cd packages/react
-          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
-          pnpm publish --access public --tag ${{ github.event.inputs.tag || 'latest' }} --no-git-checks
+          echo "@unipat-ai:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
+          pnpm publish --tag ${{ github.event.inputs.tag || 'latest' }} --no-git-checks
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
