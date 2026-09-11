@@ -1,0 +1,41 @@
+name: Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'npm 发布 tag (如 latest, beta)'
+        required: false
+        default: 'latest'
+
+jobs:
+  publish:
+    name: Build & Publish to npm
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node & pnpm
+        run: |
+          which node || export PATH=$HOME/.nvm/versions/node/v24.15.0/bin:$PATH
+          which pnpm || npm install -g pnpm
+          echo "Node version: $(node -v)"
+          echo "pnpm version: $(pnpm -v)"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run build
+        run: pnpm --filter @unipat-ai/file-preview run build
+
+      - name: Run tests
+        run: pnpm --filter @unipat-ai/file-preview run test
+
+      - name: Publish to npm
+        run: |
+          cd packages/react
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+          pnpm publish --access public --tag ${{ github.event.inputs.tag || 'latest' }} --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
