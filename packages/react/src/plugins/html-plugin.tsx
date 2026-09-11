@@ -13,8 +13,11 @@ function HtmlComponent({ src, className, style, onLoad, onError, fileName }: Pre
   const [fullscreen, setFullscreen] = useState(false);
   const displayName = inferFileName(src, fileName);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>HTML 加载失败：{error.message}</div>;
   }
 

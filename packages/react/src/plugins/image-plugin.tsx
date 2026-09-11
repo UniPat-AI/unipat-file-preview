@@ -16,8 +16,16 @@ function ImageComponent({ src, className, style, onLoad, onError, fileName }: Pr
 
   const displayName = inferFileName(src, fileName);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
+  React.useEffect(() => {
+    setZoom(1);
+    setRotation(0);
+  }, [src]);
+
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>图片加载失败：{error.message}</div>;
   }
 

@@ -18,6 +18,7 @@ export {
   HtmlPlugin,
   FallbackPlugin,
 } from './plugins/default-plugins.js';
+export { parseCsv } from './plugins/table-plugin.js';
 export { inferFileType, inferFileName, useSourceUrl, useSourceText } from './plugins/utils.js';
 
 // 微服务模式 hook 与查看器导出（兼容已有依赖）

@@ -8,33 +8,102 @@ export const TablePlugin: PreviewPlugin = {
   Component: TableComponent,
 };
 
-function parseCsv(text: string): string[][] {
-  
-  const lines = text.split(String.fromCharCode(10)).map(l => l.trim()).filter(Boolean);
-  if (lines.length === 0) return [];
-  const firstLine = lines[0] ?? '';
-  let delimiter = ',';
-  if (firstLine.includes('	')) delimiter = '	';
-  else if (firstLine.includes(';') && !firstLine.includes(',')) delimiter = ';';
+/**
+ * RFC 4180 合规的 CSV / TSV 标准解析器
+ * 1. 严格支持字段内包含换行（\r\n 或 \n）；
+ * 2. 严格支持双引号转义（"" 还原为单个 "）；
+ * 3. 严格保留字段内有效首尾空格；
+ * 4. 自动检测制表符 \t、分号 ; 或逗号 , 分隔符。
+ */
+export function parseCsv(text: string, explicitDelimiter?: string): string[][] {
+  if (!text || text.length === 0) return [];
 
-  return lines.map((line) => {
-    const row: string[] = [];
-    let insideQuote = false;
-    let entry = '';
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
+  let delimiter = explicitDelimiter;
+  if (!delimiter) {
+    const sample = text.slice(0, 4096);
+    const tabs = (sample.match(/\t/g) || []).length;
+    const commas = (sample.match(/,/g) || []).length;
+    const semicolons = (sample.match(/;/g) || []).length;
+    if (tabs > commas && tabs > semicolons) delimiter = '\t';
+    else if (semicolons > commas && semicolons > tabs) delimiter = ';';
+    else delimiter = ',';
+  }
+
+  const rows: string[][] = [];
+  let currentRow: string[] = [];
+  let currentField = '';
+  let inQuotes = false;
+  let i = 0;
+  const len = text.length;
+
+  while (i < len) {
+    const char = text[i];
+
+    if (inQuotes) {
       if (char === '"') {
-        insideQuote = !insideQuote;
-      } else if (char === delimiter && !insideQuote) {
-        row.push(entry.trim());
-        entry = '';
+        if (i + 1 < len && text[i + 1] === '"') {
+          currentField += '"';
+          i += 2;
+          continue;
+        } else {
+          inQuotes = false;
+          i++;
+          continue;
+        }
       } else {
-        entry += char;
+        currentField += char;
+        i++;
+        continue;
+      }
+    } else {
+      if (char === '"') {
+        inQuotes = true;
+        i++;
+        continue;
+      } else if (char === delimiter) {
+        currentRow.push(currentField);
+        currentField = '';
+        i++;
+        continue;
+      } else if (char === '\r') {
+        if (i + 1 < len && text[i + 1] === '\n') {
+          i++;
+        }
+        currentRow.push(currentField);
+        currentField = '';
+        rows.push(currentRow);
+        currentRow = [];
+        i++;
+        continue;
+      } else if (char === '\n') {
+        currentRow.push(currentField);
+        currentField = '';
+        rows.push(currentRow);
+        currentRow = [];
+        i++;
+        continue;
+      } else {
+        currentField += char;
+        i++;
+        continue;
       }
     }
-    row.push(entry.trim());
-    return row;
-  });
+  }
+
+  if (currentField.length > 0 || inQuotes || currentRow.length > 0) {
+    currentRow.push(currentField);
+    rows.push(currentRow);
+  }
+
+  // 如果文件以换行结尾，过滤掉末尾单独一个空字段的行
+  if (rows.length > 0) {
+    const lastRow = rows[rows.length - 1];
+    if (lastRow && lastRow.length === 1 && lastRow[0] === '' && (text.endsWith('\n') || text.endsWith('\r'))) {
+      rows.pop();
+    }
+  }
+
+  return rows;
 }
 
 function TableComponent({ src, className, style, onLoad, onError, fileName }: PreviewPluginProps) {
@@ -43,13 +112,27 @@ function TableComponent({ src, className, style, onLoad, onError, fileName }: Pr
   const [pageSize] = useState(50);
   const displayName = inferFileName(src, fileName);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
+  React.useEffect(() => {
+    if (!loading && !error && text !== null) {
+      onLoad?.();
+    }
+  }, [loading, error, text, onLoad]);
+
+  // 当文件源切换时重置分页
+  React.useEffect(() => {
+    setPage(0);
+  }, [src]);
+
   const rows = useMemo(() => {
     if (!text) return [];
     return parseCsv(text);
   }, [text]);
 
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>表格加载失败：{error.message}</div>;
   }
 
@@ -57,7 +140,25 @@ function TableComponent({ src, className, style, onLoad, onError, fileName }: Pr
     return <div style={styles.loading}>解析表格中…</div>;
   }
 
-  const header = rows[0] ?? [];
+  if (rows.length === 0) {
+    return (
+      <div className={className} style={{ ...styles.container, ...style }}>
+        <div style={styles.toolbar}>
+          <span style={styles.fileName}>{displayName}</span>
+        </div>
+        <div style={styles.emptyNotice}>（空表格文件）</div>
+      </div>
+    );
+  }
+
+  // 计算最大列数，确保即便行不等长也不会丢失单元格
+  const maxCols = rows.reduce((max, r) => Math.max(max, r.length), 0);
+  const rawHeader = rows[0] ?? [];
+  const headerCols: string[] = [];
+  for (let c = 0; c < maxCols; c++) {
+    headerCols.push(rawHeader[c] || `列 ${c + 1}`);
+  }
+
   const bodyRows = rows.slice(1);
   const totalPages = Math.ceil(bodyRows.length / pageSize) || 1;
   const currentRows = bodyRows.slice(page * pageSize, (page + 1) * pageSize);
@@ -66,7 +167,7 @@ function TableComponent({ src, className, style, onLoad, onError, fileName }: Pr
     <div className={className} style={{ ...styles.container, ...style }}>
       <div style={styles.toolbar}>
         <span style={styles.fileName}>
-          {displayName} <span style={styles.meta}>({rows.length} 行 · {header.length} 列)</span>
+          {displayName} <span style={styles.meta}>({rows.length} 行 · {maxCols} 列)</span>
         </span>
         <div style={styles.pagination}>
           <button
@@ -95,7 +196,7 @@ function TableComponent({ src, className, style, onLoad, onError, fileName }: Pr
           <thead>
             <tr>
               <th style={styles.indexTh}>#</th>
-              {header.map((col, idx) => (
+              {headerCols.map((col, idx) => (
                 <th key={idx} style={styles.th}>
                   {col}
                 </th>
@@ -106,7 +207,7 @@ function TableComponent({ src, className, style, onLoad, onError, fileName }: Pr
             {currentRows.map((row, rIdx) => (
               <tr key={rIdx} style={rIdx % 2 === 1 ? styles.altRow : {}}>
                 <td style={styles.indexTd}>{page * pageSize + rIdx + 1}</td>
-                {header.map((_, cIdx) => (
+                {headerCols.map((_, cIdx) => (
                   <td key={cIdx} style={styles.td}>
                     {row[cIdx] ?? ''}
                   </td>

@@ -9,13 +9,25 @@ export const MediaPlugin: PreviewPlugin = {
   Component: MediaComponent,
 };
 
-function MediaComponent({ src, fileType, fileName, className, style, onLoad, onError }: PreviewPluginProps) {
+function MediaComponent({
+  src,
+  fileType,
+  fileName,
+  className,
+  style,
+  allowDownload = true,
+  onLoad,
+  onError,
+}: PreviewPluginProps) {
   const { url, error } = useSourceUrl(src);
   const displayName = inferFileName(src, fileName);
   const isVideo = ['mp4', 'webm', 'ogg'].includes(fileType);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>媒体加载失败：{error.message}</div>;
   }
 
@@ -34,6 +46,7 @@ function MediaComponent({ src, fileType, fileName, className, style, onLoad, onE
           <video
             src={url}
             controls
+            controlsList={allowDownload ? undefined : 'nodownload'}
             autoPlay={false}
             onLoadedData={() => onLoad?.()}
             onError={() => onError?.(new Error('视频解码或播放失败'))}
@@ -45,6 +58,7 @@ function MediaComponent({ src, fileType, fileName, className, style, onLoad, onE
             <audio
               src={url}
               controls
+              controlsList={allowDownload ? undefined : 'nodownload'}
               autoPlay={false}
               onLoadedData={() => onLoad?.()}
               onError={() => onError?.(new Error('音频解码或播放失败'))}

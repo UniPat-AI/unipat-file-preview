@@ -35,6 +35,14 @@ export interface DirectFilePreviewProps {
   readonly fileName?: string;
   /** 插件扩展列表：自定义插件会优先于内置插件进行匹配 */
   readonly plugins?: readonly PreviewPlugin[];
+  /** 禁用的内置插件名称列表（如 ['pdf', 'html']） */
+  readonly disabledPlugins?: readonly string[];
+  /** 是否允许下载（为 false 时隐藏兜底卡片及内嵌界面的全部下载入口，默认 true） */
+  readonly allowDownload?: boolean;
+  /** 是否允许在新标签页打开（为 false 时隐藏外跳新窗口入口，默认 true） */
+  readonly allowOpen?: boolean;
+  /** 是否允许打印（默认 true） */
+  readonly allowPrint?: boolean;
   readonly className?: string;
   readonly style?: React.CSSProperties;
   readonly onLoad?: () => void;
@@ -79,6 +87,10 @@ function DirectFilePreview(props: DirectFilePreviewProps) {
     fileType: explicitType,
     fileName,
     plugins: customPlugins,
+    disabledPlugins,
+    allowDownload = true,
+    allowOpen = true,
+    allowPrint = true,
     className,
     style,
     onLoad,
@@ -91,9 +103,14 @@ function DirectFilePreview(props: DirectFilePreviewProps) {
   );
 
   const matchedPlugin = useMemo(() => {
-    const pool = [...(customPlugins ?? []), ...DEFAULT_PLUGINS];
-    return pool.find((p) => p.match(fileType, src)) ?? DEFAULT_PLUGINS[DEFAULT_PLUGINS.length - 1]!;
-  }, [fileType, src, customPlugins]);
+    const disabledSet = new Set(disabledPlugins ?? []);
+    const availableDefaults = DEFAULT_PLUGINS.filter((p) => !disabledSet.has(p.name));
+    const pool = [...(customPlugins ?? []), ...availableDefaults];
+    if (pool.length === 0) {
+      return DEFAULT_PLUGINS[DEFAULT_PLUGINS.length - 1]!;
+    }
+    return pool.find((p) => p.match(fileType, src)) ?? pool[pool.length - 1]!;
+  }, [fileType, src, customPlugins, disabledPlugins]);
 
   const Component = matchedPlugin.Component;
 
@@ -104,6 +121,9 @@ function DirectFilePreview(props: DirectFilePreviewProps) {
       fileName={fileName}
       className={className}
       style={style}
+      allowDownload={allowDownload}
+      allowOpen={allowOpen}
+      allowPrint={allowPrint}
       onLoad={onLoad}
       onError={onError}
     />

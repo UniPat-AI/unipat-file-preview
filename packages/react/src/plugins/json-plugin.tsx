@@ -23,6 +23,26 @@ function JsonComponent({ src, className, style, fileName, onLoad, onError }: Pre
 
   const displayName = inferFileName(src, fileName);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
+  React.useEffect(() => {
+    if (!loading && !error && text !== null) {
+      onLoad?.();
+    }
+  }, [loading, error, text, onLoad]);
+
+  React.useEffect(() => {
+    setSearchQuery('');
+    setViewMode('tree');
+  }, [src]);
+
+  const hasLargeNumbers = useMemo(() => {
+    if (!text) return false;
+    return /:\s*-?\d{16,}\b/.test(text) || /\[\s*-?\d{16,}\b/.test(text);
+  }, [text]);
+
   const parsed = useMemo(() => {
     if (!text) return { data: null, error: null };
     try {
@@ -34,7 +54,6 @@ function JsonComponent({ src, className, style, fileName, onLoad, onError }: Pre
   }, [text]);
 
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>JSON 读取失败：{error.message}</div>;
   }
 
@@ -129,6 +148,11 @@ function JsonComponent({ src, className, style, fileName, onLoad, onError }: Pre
       <div style={styles.contentHost}>
         {viewMode === 'tree' ? (
           <div style={styles.treeRoot}>
+            {hasLargeNumbers ? (
+              <div style={styles.largeNumBanner}>
+                ⚠️ 检测到大整数（&gt; 2^53 - 1），树形视图中数值可能存在 JS 精度截断。查看或核对准确 ID / 金额请切换至「原始代码」模式。
+              </div>
+            ) : null}
             <JsonNode
               name=""
               value={parsed.data}
@@ -140,7 +164,7 @@ function JsonComponent({ src, className, style, fileName, onLoad, onError }: Pre
         ) : (
           <div style={styles.rawHost}>
             <pre style={styles.rawPre}>
-              <code>{JSON.stringify(parsed.data, null, 2)}</code>
+              <code>{text}</code>
             </pre>
           </div>
         )}
@@ -465,6 +489,17 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#991b1b',
     borderBottom: '1px solid #fecaca',
     fontSize: 12,
+    fontFamily: 'system-ui, -apple-system, sans-serif',
+  },
+  largeNumBanner: {
+    padding: '8px 12px',
+    background: '#fef3c7',
+    color: '#92400e',
+    borderRadius: 6,
+    marginBottom: 12,
+    fontSize: 12,
+    lineHeight: 1.5,
+    border: '1px solid #fde68a',
     fontFamily: 'system-ui, -apple-system, sans-serif',
   },
   loading: {

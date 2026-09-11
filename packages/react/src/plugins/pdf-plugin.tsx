@@ -8,13 +8,25 @@ export const PdfPlugin: PreviewPlugin = {
   Component: PdfComponent,
 };
 
-function PdfComponent({ src, className, style, onLoad, onError, fileName }: PreviewPluginProps) {
+function PdfComponent({
+  src,
+  className,
+  style,
+  allowOpen = true,
+  allowDownload = true,
+  onLoad,
+  onError,
+  fileName,
+}: PreviewPluginProps) {
   const { url, error } = useSourceUrl(src);
   const [fullscreen, setFullscreen] = useState(false);
   const displayName = inferFileName(src, fileName);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>PDF 加载失败：{error.message}</div>;
   }
 
@@ -26,8 +38,8 @@ function PdfComponent({ src, className, style, onLoad, onError, fileName }: Prev
     window.open(url, '_blank');
   };
 
-  // 移植自 GDPVal-V2 踩坑方案：追加标准 PDF 打开参数，默认不展开左侧缩略图/书签侧栏（保留工具栏）
-  const viewerUrl = url.includes('#') ? url : `${url}#toolbar=1&navpanes=0&pagemode=none`;
+  const toolbarParam = allowDownload ? 'toolbar=1' : 'toolbar=0';
+  const viewerUrl = url.includes('#') ? url : `${url}#${toolbarParam}&navpanes=0&pagemode=none`;
 
   return (
     <div
@@ -41,9 +53,11 @@ function PdfComponent({ src, className, style, onLoad, onError, fileName }: Prev
       <div style={styles.toolbar}>
         <span style={styles.fileName}>{displayName}</span>
         <div style={styles.actions}>
-          <button type="button" onClick={openInNewTab} style={styles.btn}>
-            在新标签页打开 ↗
-          </button>
+          {allowOpen ? (
+            <button type="button" onClick={openInNewTab} style={styles.btn}>
+              在新标签页打开 ↗
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={() => setFullscreen((v) => !v)}
@@ -68,9 +82,11 @@ function PdfComponent({ src, className, style, onLoad, onError, fileName }: Prev
           >
             <div style={styles.fallbackNotice}>
               <p>当前浏览器不支持直接内嵌显示 PDF 文件。</p>
-              <a href={url} target="_blank" rel="noreferrer" style={styles.downloadLink}>
-                点击此处下载并查看文件
-              </a>
+              {allowDownload ? (
+                <a href={url} target="_blank" rel="noreferrer" style={styles.downloadLink}>
+                  点击此处下载并查看文件
+                </a>
+              ) : null}
             </div>
           </iframe>
         </object>

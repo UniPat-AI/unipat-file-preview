@@ -8,6 +8,9 @@ export interface PreviewPluginProps {
   fileName?: string | undefined;
   className?: string | undefined;
   style?: React.CSSProperties | undefined;
+  allowDownload?: boolean | undefined;
+  allowOpen?: boolean | undefined;
+  allowPrint?: boolean | undefined;
   onLoad?: (() => void) | undefined;
   onError?: ((error: Error) => void) | undefined;
 }

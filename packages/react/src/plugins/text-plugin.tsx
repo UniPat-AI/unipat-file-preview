@@ -40,8 +40,17 @@ function TextComponent({ src, fileType, fileName, className, style, onLoad, onEr
   const [copied, setCopied] = useState(false);
   const displayName = inferFileName(src, fileName);
 
+  React.useEffect(() => {
+    if (error) onError?.(error);
+  }, [error, onError]);
+
+  React.useEffect(() => {
+    if (!loading && !error && text !== null) {
+      onLoad?.();
+    }
+  }, [loading, error, text, onLoad]);
+
   if (error) {
-    onError?.(error);
     return <div style={styles.errorBox}>文本加载失败：{error.message}</div>;
   }
 

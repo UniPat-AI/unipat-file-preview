@@ -8,9 +8,21 @@ export const FallbackPlugin: PreviewPlugin = {
   Component: FallbackComponent,
 };
 
-function FallbackComponent({ src, fileType, fileName, className, style }: PreviewPluginProps) {
+function FallbackComponent({
+  src,
+  fileType,
+  fileName,
+  className,
+  style,
+  allowDownload = true,
+  onLoad,
+}: PreviewPluginProps) {
   const { url } = useSourceUrl(src);
   const displayName = inferFileName(src, fileName);
+
+  React.useEffect(() => {
+    onLoad?.();
+  }, [onLoad]);
 
   return (
     <div className={className} style={{ ...styles.container, ...style }}>
@@ -18,11 +30,17 @@ function FallbackComponent({ src, fileType, fileName, className, style }: Previe
         <div style={styles.icon}>📄</div>
         <div style={styles.title}>{displayName}</div>
         <div style={styles.badge}>{fileType ? fileType.toUpperCase() : 'UNKNOWN'} 文件</div>
-        <p style={styles.hint}>暂不支持直接在浏览器中内嵌预览该类型文件，您可以直接下载后查看。</p>
-        {url ? (
+        <p style={styles.hint}>
+          {allowDownload
+            ? '暂不支持直接在浏览器中内嵌预览该类型文件，您可以直接下载后查看。'
+            : '暂不支持直接在浏览器中内嵌预览该类型文件。'}
+        </p>
+        {allowDownload && url ? (
           <a href={url} download={displayName} style={styles.downloadBtn}>
             下载文件
           </a>
+        ) : !allowDownload ? (
+          <div style={styles.noDownloadBadge}>受权限限制，未开启下载</div>
         ) : null}
       </div>
     </div>
@@ -92,5 +110,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
     cursor: 'pointer',
     transition: 'background 0.15s ease',
+  },
+  noDownloadBadge: {
+    display: 'inline-block',
+    padding: '6px 14px',
+    background: '#f1f5f9',
+    color: '#94a3b8',
+    borderRadius: 6,
+    fontSize: 13,
+    border: '1px dashed #cbd5e1',
   },
 };
