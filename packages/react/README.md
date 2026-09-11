@@ -1,4 +1,4 @@
-# @unipat/file-preview-react
+# @unipat-ai/file-preview
 
 开箱即用的前端文件预览 React 组件库。基于现代插件化架构设计，自动根据文件类型调度专属插件渲染，零后端依赖，支持自定义扩展。
 
@@ -20,9 +20,9 @@
 ## 安装
 
 ```bash
-pnpm add @unipat/file-preview-react
+pnpm add @unipat-ai/file-preview
 # 或
-npm install @unipat/file-preview-react
+npm install @unipat-ai/file-preview
 ```
 
 ## 快速使用
@@ -30,7 +30,7 @@ npm install @unipat/file-preview-react
 ### 1. 基础用法（直接传 URL）
 
 ```tsx
-import { FilePreview } from '@unipat/file-preview-react';
+import { FilePreview } from '@unipat-ai/file-preview';
 
 function App() {
   return (
@@ -46,7 +46,7 @@ function App() {
 
 ```tsx
 import { useState } from 'react';
-import { FilePreview } from '@unipat/file-preview-react';
+import { FilePreview } from '@unipat-ai/file-preview';
 
 function Uploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -71,7 +71,7 @@ function Uploader() {
 你可以随时编写并注入自己的预览插件（例如支持 DICOM 医疗影像、3D 模型、特定业务图表等）：
 
 ```tsx
-import { FilePreview, type PreviewPlugin } from '@unipat/file-preview-react';
+import { FilePreview, type PreviewPlugin } from '@unipat-ai/file-preview';
 
 const My3DPlugin: PreviewPlugin = {
   name: 'my-3d-model',
