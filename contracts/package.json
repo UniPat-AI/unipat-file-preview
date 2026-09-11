@@ -1,0 +1,34 @@
+{
+  "name": "@unipat/file-preview-contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "公共文件预览库 · 协议契约（错误码、类型、支持格式清单、schema 版本）",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemas/preview-state": "./schemas/preview-state.schema.json",
+    "./schemas/manifest": "./schemas/manifest.schema.json",
+    "./schemas/sheet-window": "./schemas/sheet-window.schema.json",
+    "./golden/state.ready": "./golden/state.ready.json",
+    "./golden/manifest.pdf": "./golden/manifest.pdf.json",
+    "./golden/sheet-window.csv": "./golden/sheet-window.csv.json"
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "golden"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty",
+    "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo",
+    "verify:golden": "node tools/verify-golden.mjs"
+  }
+}

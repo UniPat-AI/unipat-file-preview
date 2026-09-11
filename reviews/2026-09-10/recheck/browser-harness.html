@@ -1,0 +1,20 @@
+<html><body><h1>Review isolated React fixtures</h1><div id='root'></div><pre id='calls'></pre><script type='module'>
+import {injectIntoGlobalHook} from '/@react-refresh'; injectIntoGlobalHook(window); window.$RefreshReg$=()=>{}; window.$RefreshSig$=()=>(type)=>type;
+</script><script type='module'>
+import React from '/node_modules/.vite/deps/react.js?v=0ac72829';
+import ReactDOM from '/node_modules/.vite/deps/react-dom_client.js?v=0ac72829'; const {createRoot}=ReactDOM;
+import {FilePreview} from '/@fs/Users/gelx/Desktop/code/unipat-file-preview/packages/react/dist/index.js';
+const h=React.createElement;const calls=[];function log(s){calls.push(s);document.getElementById('calls').textContent=calls.join('\n')}
+function state(id){return {previewId:id,fileRef:{resourceKey:'same-file',version:'v1'},profileId:'standard-v1',generation:1,executionState:'succeeded',availability:'ready',stage:'publishing',revision:1,publishedRevision:1,permissions:{},warnings:[],error:null}}
+function manifest(id){return {schemaVersion:'1.0',previewId:id,publishedRevision:1,defaultRepresentationId:'text',representations:[{id:'text',kind:'text',entryArtifactId:'text'}],artifacts:[{artifactId:'text',mediaType:'text/plain'}]}}
+function client(id,fail=false){return {getState:async()=>{log(id+' getState');return state(id)},fetchManifest:async q=>{log(id+' fetchManifest '+q.previewId);if(fail)throw {code:'ACTION_FORBIDDEN',message:'Synthetic manifest denied',retryable:false};return manifest(q.previewId)},fetchArtifact:async()=>new TextEncoder().encode('Synthetic document for '+id).buffer}}
+const ca=client('A'),cb=client('B'),cf=client('Failure',true);function App(){const [selected,set]=React.useState('A');return h('div',null,h('button',{onClick:()=>set('B')},'Switch client identity B'),h('button',{onClick:()=>set('Failure')},'Test manifest failure'),h('p',null,'Selected '+selected),h(FilePreview,{key:selected==='Failure'?'fail':'identity',client:selected==='A'?ca:selected==='B'?cb:cf,file:{resourceKey:'same-file',version:'v1'}}))};createRoot(document.getElementById('root')).render(h(App));
+</script><h2>Actual converter notebook output</h2><div id="notebook"></div><h2>Missing text chunk</h2><div id="text404"></div><script type="module">
+import React from '/node_modules/.vite/deps/react.js?v=0ac72829';
+import ReactDOM from '/node_modules/.vite/deps/react-dom_client.js?v=0ac72829';
+import {NotebookViewer,TextViewer} from '/@fs/Users/gelx/Desktop/code/unipat-file-preview/packages/react/dist/index.js';
+const h=React.createElement;
+const notebook="{\n  \"kind\": \"notebook\",\n  \"cells\": [\n    {\n      \"index\": 0,\n      \"cell_type\": \"code\",\n      \"execution_count\": null,\n      \"source\": \"1+1\",\n      \"source_truncated\": false,\n      \"outputs\": [\n        {\n          \"output_type\": \"execute_result\",\n          \"text_plain\": \"2\",\n          \"rich_omitted\": false\n        }\n      ]\n    }\n  ],\n  \"cell_total\": 1,\n  \"rich_omitted\": 0\n}";
+ReactDOM.createRoot(document.getElementById('notebook')).render(h(NotebookViewer,{previewId:'fixture',publishedRevision:1,artifact:{artifactId:'entry',mediaType:'application/json'},client:{fetchArtifact:async()=>new TextEncoder().encode(notebook).buffer}}));
+ReactDOM.createRoot(document.getElementById('text404')).render(h(TextViewer,{previewId:'fixture',publishedRevision:1,artifact:{artifactId:'entry',mediaType:'application/json'},client:{fetchArtifact:async(q)=>{if(q.artifactId==='entry')return new TextEncoder().encode(JSON.stringify({chunk_ids:['chunk_0000']})).buffer;throw {code:'RESOURCE_NOT_FOUND',message:'chunk missing'};}}}));
+</script></body></html>

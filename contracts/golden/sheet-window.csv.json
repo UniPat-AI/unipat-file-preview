@@ -1,0 +1,72 @@
+{
+  "sheet_id": "sheet_0",
+  "range": {
+    "published_revision": 1,
+    "sheet_id": "sheet_0",
+    "row_start": 0,
+    "row_end": 1,
+    "col_start": 0,
+    "col_end": 1
+  },
+  "cells": [
+    {
+      "row": 0,
+      "col": 0,
+      "type": "string",
+      "raw_value": "Name",
+      "number_format": null,
+      "display_value": "Name",
+      "formula": null,
+      "cached_value": null,
+      "value_source": "literal",
+      "style_id": null,
+      "warning_codes": []
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "type": "string",
+      "raw_value": "Age",
+      "number_format": null,
+      "display_value": "Age",
+      "formula": null,
+      "cached_value": null,
+      "value_source": "literal",
+      "style_id": null,
+      "warning_codes": []
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "type": "string",
+      "raw_value": "Alice",
+      "number_format": null,
+      "display_value": "Alice",
+      "formula": null,
+      "cached_value": null,
+      "value_source": "literal",
+      "style_id": null,
+      "warning_codes": []
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "type": "number",
+      "raw_value": "30",
+      "number_format": "0",
+      "display_value": "30",
+      "formula": null,
+      "cached_value": null,
+      "value_source": "literal",
+      "style_id": null,
+      "warning_codes": []
+    }
+  ],
+  "merges": [],
+  "coverage": {
+    "unit": "rows",
+    "shown": 2,
+    "total": 2
+  },
+  "warnings": []
+}

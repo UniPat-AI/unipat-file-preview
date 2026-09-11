@@ -1,0 +1,15 @@
+{
+  "name": "@unipat/file-preview-example-node-inmemory",
+  "version": "0.0.0",
+  "private": true,
+  "description": "最小 e2e：用 Node http 起 host，用 core 客户端跑通 ensure → poll → getManifest → getArtifact。",
+  "type": "module",
+  "scripts": {
+    "start": "node ./run.mjs"
+  },
+  "dependencies": {
+    "@unipat/file-preview-contracts": "workspace:*",
+    "@unipat/file-preview-core": "workspace:*",
+    "@unipat/file-preview-node": "workspace:*"
+  }
+}

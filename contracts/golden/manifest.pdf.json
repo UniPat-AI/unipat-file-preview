@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "preview_id": "prv_01H8ZXR3F7Q9M2K6WKQ4S1D2P0",
+  "source_id": "src_01H8ZXR3F7Q9M2K6WKQ4S1D2P1",
+  "profile_id": "standard-v1",
+  "published_revision": 1,
+  "source": {
+    "name": "report.pdf",
+    "extension": "pdf",
+    "size_bytes": 245678
+  },
+  "default_representation_id": "rep_pdf",
+  "availability": "ready",
+  "representations": [
+    {
+      "id": "rep_pdf",
+      "kind": "pdf",
+      "label": "PDF",
+      "status": "ready",
+      "completeness": "complete",
+      "affects_completeness": true,
+      "entry_artifact_id": "art_pdf_entry",
+      "coverage": {
+        "unit": "pages",
+        "shown": 12,
+        "total": 12
+      },
+      "warnings": [],
+      "error": null
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "art_pdf_entry",
+      "media_type": "application/pdf",
+      "size_bytes": 245678,
+      "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+      "role": "entry"
+    }
+  ],
+  "capabilities": {
+    "search_scope": "document",
+    "static_only": false,
+    "has_text_layer": true
+  },
+  "warnings": []
+}

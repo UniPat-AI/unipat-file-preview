@@ -1,0 +1,25 @@
+{
+  "name": "unipat-file-preview",
+  "private": true,
+  "version": "0.0.0",
+  "description": "公共文件预览库（monorepo 根）：契约、前端 core、React 组件、Node 后端、Go 后端、转换器与数据库脚本",
+  "type": "module",
+  "engines": {
+    "node": ">=18.18.0",
+    "pnpm": ">=8"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "contracts",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "pnpm -r --filter \"./packages/*\" run test",
+    "typecheck": "pnpm -r run typecheck",
+    "clean": "pnpm -r run clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

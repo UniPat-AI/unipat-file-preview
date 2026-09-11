@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unipat-file-preview-converter"
+version = "0.0.1"
+description = "统一转换容器：把源文件转成受控展示产物（PDF/CSV/图像/HTML/JSON 等）"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "unipat" }]
+
+# 全部为可选依赖。基础处理器（txt/md/json/xml/xbrl/csv/ipynb/html/pdf 头校验）仅用标准库。
+# office_pdf 依赖系统 libreoffice（不通过 pip 安装）。
+dependencies = []
+
+[project.optional-dependencies]
+spreadsheet = ["openpyxl>=3.1", "xlrd==1.2.0"]
+image = ["Pillow>=10.2"]
+dicom = ["pydicom>=2.4", "numpy>=1.26"]
+html_sanitize = ["tinycss2>=1.2"]
+xml_safe = ["defusedxml>=0.7"]
+all = [
+  "openpyxl>=3.1", "xlrd==1.2.0",
+  "Pillow>=10.2",
+  "pydicom>=2.4", "numpy>=1.26",
+  "tinycss2>=1.2",
+  "defusedxml>=0.7",
+]
+
+[project.scripts]
+converter = "converter.cli:main"
+converter-server = "converter.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+converter = ["py.typed"]

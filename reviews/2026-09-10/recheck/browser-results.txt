@@ -1,0 +1,8 @@
+Actual browser component check (React 18, built package served by temporary Vite proxy):
+1. Identity A initial: A getState; A fetchManifest A.
+2. Switch client to B with same file/version/profile: B fetchManifest A. No B getState.
+3. Manifest ACTION_FORBIDDEN: displayed permission error and message; no stuck loading.
+4. Python-converted notebook (1+1 output 2): displayed code 1+1 and [unsupported output: (empty)].
+5. Text index chunk_0000 + rejected chunk fetch: displayed {"chunk_ids":["chunk_0000"]}, no error.
+6. Original demo on port15173: UNKNOWN_ERROR Not Found; existing Vite proxy prefix mismatch.
+Harness initial dependency hash mismatch was corrected in the temporary harness before these observations; it was a harness setup issue, not included as a library finding.

@@ -1,0 +1,25 @@
+{
+  "preview_id": "prv_01H8ZXR3F7Q9M2K6WKQ4S1D2P0",
+  "file_ref": {
+    "resource_key": "docs/report.pdf",
+    "version": "v2026-08-31T10:00:00Z"
+  },
+  "profile_id": "standard-v1",
+  "generation": 1,
+  "execution_state": "succeeded",
+  "availability": "ready",
+  "stage": "publishing",
+  "progress": null,
+  "revision": 1,
+  "published_revision": 1,
+  "is_previous_result": false,
+  "permissions": {
+    "download_original": true,
+    "print": true,
+    "copy": true,
+    "retry": true
+  },
+  "warnings": [],
+  "error": null,
+  "retry_after_ms": null
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@unipat/file-preview-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "公共文件预览库 · 协议类型、HTTP 客户端、状态规范化（不依赖 React 与 DOM）",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty",
+    "test": "pnpm run build && node --test test/*.test.mjs",
+    "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@unipat/file-preview-contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

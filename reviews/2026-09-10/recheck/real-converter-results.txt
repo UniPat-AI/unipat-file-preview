@@ -1,0 +1,21 @@
+real.txt published IDs: [
+  'art_701b1852-a03d-4acc-ad80-0b28e41f0a1e',
+  'art_e356e2a8-9ce3-45c0-bd03-9ab3ce2d4369'
+]
+index chunk reference: chunk_0000
+chunk fetch error: RESOURCE_NOT_FOUND 404
+real.csv published IDs: [
+  'art_fecce708-59b8-4391-924f-495cc3e81c5f',
+  'art_e42e54c0-b268-49f2-9f02-4170bbf25cea'
+]
+index chunk reference: chunk_0000
+chunk fetch error: RESOURCE_NOT_FOUND 404
+sheet window: 200 {"sheet_id":"sheet_1","range":{"published_revision":1,"sheet_id":"sheet_1","row_start":1,"row_end":2,"col_start":1,"col_end":2},"cells":[],"merges":[],"coverage":{"unit":"rows","shown":0,"total":0,"scope":"sheet_1"},"warnings":[]}
+real.xlsx published IDs: [
+  'art_5a5621a6-9300-4b76-b46c-87d8db74fb6c',
+  'art_278157a4-33bc-4665-bfce-4c9d0ba5e082',
+  'art_678fca7a-29c8-406e-9e53-5859ebefb6a8'
+]
+index chunk reference: sheet_1_chunk_0000
+chunk fetch error: RESOURCE_NOT_FOUND 404
+sheet window: 200 {"sheet_id":"sheet_1","range":{"published_revision":1,"sheet_id":"sheet_1","row_start":1,"row_end":2,"col_start":1,"col_end":2},"cells":[],"merges":[],"coverage":{"unit":"rows","shown":0,"total":0,"scope":"sheet_1"},"warnings":[]}

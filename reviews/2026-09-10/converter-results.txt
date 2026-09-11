@@ -1,0 +1,11 @@
+TXT candidate: {'id': 'rep_text', 'kind': 'plain_text', 'label': '文本', 'status': 'ready', 'completeness': 'complete', 'affects_completeness': True, 'entry_artifact': 'entry', 'coverage': {'unit': 'chars', 'shown': 20, 'total': 20}, 'warnings': []} {'kind': 'plain_text', 'encoding': 'utf-8', 'chunk_ids': ['chunk_0000'], 'total_chars': 20, 'truncated': False}
+HTML input truncates suffix: <!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; connect-src 'none'; img-src data:; style-src 'unsafe-inline'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta charset="utf-8"></head><body><p>before</p></body></html>
+Invalid PDF accepted: True ready
+PDF output budget bypass: True 20437 5000 None
+XLSX ok: True
+XLSX cells: {'sheet_id': 'sheet_1', 'row_start': 1, 'row_end': 2, 'rows': [[{'row': 1, 'col': 1, 'type': 'number', 'raw_value': '0.25', 'display_value': '0.25'}, {'row': 1, 'col': 2, 'type': 'string', 'raw_value': '=1+1', 'display_value': '=1+1'}, {'row': 1, 'col': 3, 'type': 'string', 'raw_value': 'hidden', 'display_value': 'hidden'}], [{'row': 2, 'col': 1, 'type': 'string', 'raw_value': 'merged', 'display_value': 'merged'}]]}
+XLSX metadata: {'sheets': [{'sheet_id': 'sheet_1', 'name': 'Data', 'order': 1, 'visibility': 'visible', 'row_count': 2, 'col_count': 3, 'shown_row_end': 2, 'shown_col_end': 3, 'merges': [], 'freeze': {'rows': 0, 'cols': 0}, 'coverage': {'unit': 'rows', 'shown': 2, 'total': 2}, 'chunks': [{'row_start': 1, 'row_end': 2, 'col_start': 1, 'col_end': 3, 'artifact_id': 'sheet_1_chunk_0000', 'size_bytes': 669}]}], 'styles_artifact_id': None, 'capabilities': {'search_scope': 'current_window', 'static_only': True}}
+XLSX with host input.bin: False {'code': 'INTERNAL_ERROR', 'message': '处理器内部错误：InvalidFileException: openpyxl does not support .bin file format, please check you can open it with Excel first. Supported formats are: .xlsx,.xlsm,.xltx,.xltm', 'retryable': False}
+DICOM dependency unavailable: No module named 'pydicom'
+fixtures: /var/folders/yz/92lty8kj2vs59zn7zn6yrbd80000gn/T/unipat-review-fixtures-5z1ph4at
+GBK decoding: 中文内容 '탖쓎\U000c11c8' utf-16 False

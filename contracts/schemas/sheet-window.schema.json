@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unipat.dev/file-preview/schemas/sheet-window.v1.json",
+  "title": "SheetWindow",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sheet_id", "range", "cells", "merges", "coverage", "warnings"],
+  "properties": {
+    "sheet_id": { "type": "string", "minLength": 1 },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "published_revision",
+        "sheet_id",
+        "row_start",
+        "row_end",
+        "col_start",
+        "col_end"
+      ],
+      "properties": {
+        "published_revision": { "type": "integer", "minimum": 1 },
+        "sheet_id": { "type": "string", "minLength": 1 },
+        "row_start": { "type": "integer", "minimum": 0 },
+        "row_end": { "type": "integer", "minimum": 0 },
+        "col_start": { "type": "integer", "minimum": 0 },
+        "col_end": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "row",
+          "col",
+          "type",
+          "raw_value",
+          "number_format",
+          "display_value",
+          "formula",
+          "cached_value",
+          "value_source",
+          "style_id",
+          "warning_codes"
+        ],
+        "properties": {
+          "row": { "type": "integer", "minimum": 0 },
+          "col": { "type": "integer", "minimum": 0 },
+          "type": {
+            "enum": ["string", "number", "boolean", "date", "error", "blank"]
+          },
+          "raw_value": {
+            "oneOf": [{ "type": "null" }, { "type": "string" }]
+          },
+          "number_format": {
+            "oneOf": [{ "type": "null" }, { "type": "string" }]
+          },
+          "display_value": {
+            "oneOf": [{ "type": "null" }, { "type": "string" }]
+          },
+          "formula": {
+            "oneOf": [{ "type": "null" }, { "type": "string" }]
+          },
+          "cached_value": {
+            "oneOf": [{ "type": "null" }, { "type": "string" }]
+          },
+          "value_source": {
+            "enum": [
+              "literal",
+              "saved_formula_cache",
+              "formula_without_cache",
+              "unknown"
+            ]
+          },
+          "style_id": {
+            "oneOf": [{ "type": "null" }, { "type": "string" }]
+          },
+          "warning_codes": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "merges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["row_start", "row_end", "col_start", "col_end"],
+        "properties": {
+          "row_start": { "type": "integer", "minimum": 0 },
+          "row_end": { "type": "integer", "minimum": 0 },
+          "col_start": { "type": "integer", "minimum": 0 },
+          "col_end": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "shown", "total"],
+      "properties": {
+        "unit": {
+          "enum": ["rows", "frames", "cells", "chars", "pages"]
+        },
+        "shown": { "type": "integer", "minimum": 0 },
+        "total": {
+          "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+        },
+        "scope": { "type": "string" }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "scope": { "type": "string" }
+        }
+      }
+    }
+  }
+}

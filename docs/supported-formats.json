@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-09-08",
+  "source_scope": "GDPVal-V2/server/internal/storage/local.go allowedExtensions, inspected 2026-09-08",
+  "formats": [
+    {
+      "extension": "pdf",
+      "group": "pdf",
+      "processor": "pdf",
+      "primary_viewer": "pdf"
+    },
+    {
+      "extension": "doc",
+      "group": "office_document",
+      "processor": "office_pdf",
+      "primary_viewer": "pdf"
+    },
+    {
+      "extension": "docx",
+      "group": "office_document",
+      "processor": "office_pdf",
+      "primary_viewer": "pdf"
+    },
+    {
+      "extension": "rtf",
+      "group": "office_document",
+      "processor": "office_pdf",
+      "primary_viewer": "pdf"
+    },
+    {
+      "extension": "ppt",
+      "group": "presentation",
+      "processor": "office_pdf",
+      "primary_viewer": "pdf"
+    },
+    {
+      "extension": "pptx",
+      "group": "presentation",
+      "processor": "office_pdf",
+      "primary_viewer": "pdf"
+    },
+    {
+      "extension": "xls",
+      "group": "spreadsheet",
+      "processor": "spreadsheet",
+      "primary_viewer": "table"
+    },
+    {
+      "extension": "xlsx",
+      "group": "spreadsheet",
+      "processor": "spreadsheet",
+      "primary_viewer": "table"
+    },
+    {
+      "extension": "xlsm",
+      "group": "spreadsheet",
+      "processor": "spreadsheet",
+      "primary_viewer": "table"
+    },
+    {
+      "extension": "csv",
+      "group": "csv",
+      "processor": "csv",
+      "primary_viewer": "table"
+    },
+    {
+      "extension": "png",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "jpg",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "jpeg",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "bmp",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "webp",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "tif",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "tiff",
+      "group": "image",
+      "processor": "image",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "dcm",
+      "group": "dicom",
+      "processor": "dicom",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "dicom",
+      "group": "dicom",
+      "processor": "dicom",
+      "primary_viewer": "gallery"
+    },
+    {
+      "extension": "html",
+      "group": "html",
+      "processor": "html",
+      "primary_viewer": "html"
+    },
+    {
+      "extension": "htm",
+      "group": "html",
+      "processor": "html",
+      "primary_viewer": "html"
+    },
+    {
+      "extension": "xhtml",
+      "group": "html",
+      "processor": "html",
+      "primary_viewer": "html"
+    },
+    {
+      "extension": "json",
+      "group": "structured_text",
+      "processor": "structured_text",
+      "primary_viewer": "text"
+    },
+    {
+      "extension": "xml",
+      "group": "structured_text",
+      "processor": "structured_text",
+      "primary_viewer": "text"
+    },
+    {
+      "extension": "xbrl",
+      "group": "structured_text",
+      "processor": "structured_text",
+      "primary_viewer": "text"
+    },
+    {
+      "extension": "ipynb",
+      "group": "notebook",
+      "processor": "notebook",
+      "primary_viewer": "notebook"
+    },
+    {
+      "extension": "txt",
+      "group": "plain_text",
+      "processor": "plain_text",
+      "primary_viewer": "text"
+    },
+    {
+      "extension": "md",
+      "group": "plain_text",
+      "processor": "plain_text",
+      "primary_viewer": "text"
+    }
+  ]
+}

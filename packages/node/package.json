@@ -1,0 +1,37 @@
+{
+  "name": "@unipat/file-preview-node",
+  "version": "0.0.0",
+  "private": true,
+  "description": "公共文件预览库 · Node.js 后端：HTTP 处理、任务编排、内存桩实现",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./inmemory": {
+      "types": "./dist/inmemory/index.d.ts",
+      "import": "./dist/inmemory/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty",
+    "test": "pnpm run build && node --test test/*.test.mjs",
+    "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@unipat/file-preview-contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.5"
+  }
+}
