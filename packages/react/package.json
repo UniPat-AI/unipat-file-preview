@@ -1,6 +1,6 @@
 {
   "name": "@unipat-ai/file-preview",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "开箱即用的前端文件预览 React 组件库，支持 PDF/Excel/图片/文本/JSON/音视频/网页及自定义插件扩展",
   "private": false,
   "license": "UNLICENSED",
@@ -35,6 +35,7 @@
   "devDependencies": {
     "@types/react": "^18.3.3",
     "react": "^18.3.1",
+    "react-test-renderer": "18.3.1",
     "typescript": "^5.4.5"
   },
   "publishConfig": {

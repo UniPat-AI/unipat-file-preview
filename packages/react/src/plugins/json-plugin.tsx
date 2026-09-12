@@ -178,13 +178,14 @@ function JsonComponent({ src, className, style, fileName, onLoad, onError }: Pre
 // ------------------------------------------------------------
 interface JsonNodeProps {
   name: string;
+  arrayItem?: boolean;
   value: JsonValue;
   depth: number;
   searchQuery: string;
   expandSignal: boolean | null;
 }
 
-function JsonNode({ name, value, depth, searchQuery, expandSignal }: JsonNodeProps) {
+function JsonNode({ name, arrayItem = false, value, depth, searchQuery, expandSignal }: JsonNodeProps) {
   // 默认前 2 层展开
   const isContainer = value !== null && typeof value === 'object';
   const [collapsed, setCollapsed] = useState(depth >= 2);
@@ -217,7 +218,7 @@ function JsonNode({ name, value, depth, searchQuery, expandSignal }: JsonNodePro
     const matchKey = searchQuery && name.toLowerCase().includes(searchQuery);
     return (
       <span style={{ ...styles.keyName, ...(matchKey ? styles.highlightSearch : {}) }}>
-        &quot;{name}&quot;:&nbsp;
+        {arrayItem ? `[${name}]` : JSON.stringify(name)}:&nbsp;
       </span>
     );
   };
@@ -285,7 +286,8 @@ function JsonNode({ name, value, depth, searchQuery, expandSignal }: JsonNodePro
             return (
               <JsonNode
                 key={key}
-                name={isArray ? '' : key}
+                name={key}
+                arrayItem={isArray}
                 value={childVal}
                 depth={depth + 1}
                 searchQuery={searchQuery}
