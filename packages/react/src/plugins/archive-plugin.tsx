@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FilePreview } from '../file-preview.js';
-import { archiveLimits, readArchiveSource, readGzip, readZip, type ArchiveEntry } from './archive.js';
+import { archiveLimits, readArchiveSource, readGzip, readZip, readTar, readTarGzip, type ArchiveEntry } from './archive.js';
 import { inferFileName } from './utils.js';
 import type { PreviewPlugin, PreviewPluginProps } from './types.js';
 
@@ -26,7 +26,10 @@ function ArchivePreview(props: PreviewPluginProps) {
         if (archiveDepth >= limits.maxDepth) throw new Error('压缩文件嵌套层数超过预览限制');
         timer = setTimeout(() => ac.abort(new Error('读取压缩文件超时')), limits.timeoutMs);
         const data = await readArchiveSource(src, limits, ac.signal);
-        const result = fileType === 'zip' ? { entries: readZip(data, limits) } : { blob: await readGzip(data, limits, ac.signal) };
+        const result = fileType === 'zip' ? { entries: readZip(data, limits) }
+          : fileType === 'tar' ? { entries: readTar(data, limits) }
+          : fileType === 'tgz' || fileType === 'tar.gz' || /\.tar\.gz$/i.test(name) ? { entries: await readTarGzip(data, limits, ac.signal) }
+          : { blob: await readGzip(data, limits, ac.signal) };
         ac.signal.throwIfAborted();
         setState({ source: src, ...result });
         callbacks.current.onLoad?.();
@@ -90,4 +93,4 @@ function ArchivePreview(props: PreviewPluginProps) {
     </>}
   </section>;
 }
-export const ArchivePlugin: PreviewPlugin = { name: 'archive', match: type => type === 'gz' || type === 'zip', Component: ArchivePreview };
+export const ArchivePlugin: PreviewPlugin = { name: 'archive', match: type => ['gz', 'zip', 'tar', 'tgz', 'tar.gz'].includes(type), Component: ArchivePreview };
