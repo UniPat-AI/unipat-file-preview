@@ -100,3 +100,33 @@ const My3DPlugin: PreviewPlugin = {
 | `style` | `CSSProperties` | 可选。外层容器行内样式 |
 | `onLoad` | `() => void` | 可选。文件加载完成回调 |
 | `onError` | `(err: Error) => void` | 可选。加载或渲染失败回调 |
+
+## 压缩文件只读预览（0.3.0）
+
+默认内置 `ArchivePlugin`，不需要后端转码服务或 AI Runner：
+
+```tsx
+<FilePreview
+  src={authorizedBlob}
+  fileName="target_roster.tsv.gz"
+  allowDownload={false}
+  allowOpen={false}
+  allowPrint={false}
+  archiveLimits={{ maxEntryBytes: 16 * 1024 * 1024, maxDepth: 3 }}
+/>
+```
+
+- `.tsv.gz`、`.csv.gz`、`.json.gz` 等单文件 GZIP：解压后根据去掉 `.gz` 的文件名复用原有表格、JSON、文本等插件。
+- `.zip`：先读取目录，按文件夹浏览、返回上级，点击文件后才解压该文件；支持 ZIP 内 GZIP 和嵌套 ZIP。
+- 自定义 `plugins`、`disabledPlugins`、下载／打开／打印权限传递给所有内部预览；HTML 仍使用原有空 sandbox。可通过 `disabledPlugins={['archive']}` 禁用压缩预览。
+- 仅在浏览器内存中解压，不执行脚本，不上传、不保存或修改原文件，不产生业务草稿。鉴权、版本绑定、审计等仍由宿主提供。
+
+默认限制：输入 32 MiB、单文件解压 16 MiB、单归档声明的解压总量 64 MiB、2000 个条目（含目录）、最多 3 层、每次读取／解压 30 秒。`archiveLimits` 可覆盖这些正整数设置。ZIP 在解压前检查目录限额，解压流也检查实际输出上限并验证 CRC；GZIP 通过流式计数限制实际输出。限制按每层归档生效，只保留当前选中文件；切换文件或卸载时取消旧读取。表格沿用现有分页，在限额内完整加载，不提供超大归档的服务端分片或全包搜索。
+
+首期不支持 TAR/TAR.GZ、RAR、7z、ZIP64、分卷、加密、非 UTF-8 文件名和 Stored/Deflate 以外的 ZIP 算法；异常内容显示错误，不自动下载或执行。拒绝路径穿越、绝对路径、重复路径、符号链接及特殊文件。浏览器须支持 `DecompressionStream` 的 `gzip` 和 `deflate-raw`，不支持时显示错误。
+
+### 宿主接入注意
+
+宿主必须允许读取压缩文件原始字节；如果平台在 API 或界面层提前判为 unsupported，升级本包不会自动绕过限制。推荐鉴权后传入 Blob，并保留原始 `fileName`；不要把 `.tsv.gz` 的 `fileType` 显式设置成 `tsv`，让组件识别 `gz` 后解压。服务器可以返回 `application/gzip`、`application/zip` 或 `application/octet-stream`，**不要把文件本身的 GZIP 层同时声明为 HTTP `Content-Encoding: gzip`**，否则浏览器会在 fetch 前自动解压而与文件名不符。HTTP 传输压缩应与原文件的字节层严格区分。
+
+可运行独立浏览器验收示例：`pnpm --filter @unipat/file-preview-example-archive dev`。样例涵盖 GZIP TSV、ZIP 内 JSON／GZIP／HTML；关闭下载、外跳与打印。示例 GZIP URL 使用 `.bin` 后缀，避免开发服务器自动设置 HTTP Content-Encoding。

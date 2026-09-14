@@ -9,6 +9,7 @@ export type {
 export type { PreviewPlugin, PreviewPluginProps, FileSource } from './plugins/types.js';
 export {
   DEFAULT_PLUGINS,
+  ArchivePlugin,
   PdfPlugin,
   ImagePlugin,
   JsonPlugin,
@@ -41,3 +42,6 @@ export { TableViewer } from './table-viewer.js';
 export { GalleryViewer } from './gallery-viewer.js';
 export { HtmlViewer } from './html-viewer.js';
 export { NotebookViewer } from './notebook-viewer.js';
+
+export { DEFAULT_ARCHIVE_LIMITS } from './plugins/archive.js';
+export type { ArchiveLimits } from './plugins/archive.js';

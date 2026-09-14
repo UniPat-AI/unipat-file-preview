@@ -21,6 +21,7 @@ import { HtmlViewer } from './html-viewer.js';
 import { NotebookViewer } from './notebook-viewer.js';
 import type { FileSource, PreviewPlugin } from './plugins/types.js';
 import { DEFAULT_PLUGINS } from './plugins/default-plugins.js';
+import type { ArchiveLimits } from './plugins/archive.js';
 import { inferFileType } from './plugins/utils.js';
 
 // ============================================================
@@ -29,24 +30,28 @@ import { inferFileType } from './plugins/utils.js';
 export interface DirectFilePreviewProps {
   /** 文件来源：网络 URL 字符串、本地 File 对象、或 Blob 对象 */
   readonly src: FileSource;
+  /** 压缩文件只读预览资源限制 */
+  readonly archiveLimits?: Partial<ArchiveLimits> | undefined;
+  /** @internal 嵌套归档深度，由压缩插件传递 */
+  readonly archiveDepth?: number | undefined;
   /** 文件格式（小写，不含点，如 'pdf', 'csv', 'png'）；未指定时自动根据 URL 或文件名推导 */
-  readonly fileType?: string;
+  readonly fileType?: string | undefined;
   /** 文件名（用于展示与下载提示） */
-  readonly fileName?: string;
+  readonly fileName?: string | undefined;
   /** 插件扩展列表：自定义插件会优先于内置插件进行匹配 */
-  readonly plugins?: readonly PreviewPlugin[];
+  readonly plugins?: readonly PreviewPlugin[] | undefined;
   /** 禁用的内置插件名称列表（如 ['pdf', 'html']） */
-  readonly disabledPlugins?: readonly string[];
+  readonly disabledPlugins?: readonly string[] | undefined;
   /** 是否允许下载（为 false 时隐藏兜底卡片及内嵌界面的全部下载入口，默认 true） */
-  readonly allowDownload?: boolean;
+  readonly allowDownload?: boolean | undefined;
   /** 是否允许在新标签页打开（为 false 时隐藏外跳新窗口入口，默认 true） */
-  readonly allowOpen?: boolean;
+  readonly allowOpen?: boolean | undefined;
   /** 是否允许打印（默认 true） */
-  readonly allowPrint?: boolean;
-  readonly className?: string;
-  readonly style?: React.CSSProperties;
-  readonly onLoad?: () => void;
-  readonly onError?: (error: Error) => void;
+  readonly allowPrint?: boolean | undefined;
+  readonly className?: string | undefined;
+  readonly style?: React.CSSProperties | undefined;
+  readonly onLoad?: (() => void) | undefined;
+  readonly onError?: ((error: Error) => void) | undefined;
 }
 
 // ============================================================
@@ -117,6 +122,10 @@ function DirectFilePreview(props: DirectFilePreviewProps) {
   return (
     <Component
       src={src}
+      archiveLimits={props.archiveLimits}
+      archiveDepth={props.archiveDepth}
+      plugins={customPlugins}
+      disabledPlugins={disabledPlugins}
       fileType={fileType}
       fileName={fileName}
       className={className}

@@ -1,3 +1,4 @@
+import { ArchivePlugin } from './archive-plugin.js';
 import type { PreviewPlugin } from './types.js';
 import { PdfPlugin } from './pdf-plugin.js';
 import { ImagePlugin } from './image-plugin.js';
@@ -13,6 +14,7 @@ import { FallbackPlugin } from './fallback-plugin.js';
  * JsonPlugin 优先于通用的 TextPlugin 匹配 .json
  */
 export const DEFAULT_PLUGINS: readonly PreviewPlugin[] = [
+  ArchivePlugin,
   PdfPlugin,
   ImagePlugin,
   JsonPlugin,
@@ -24,6 +26,7 @@ export const DEFAULT_PLUGINS: readonly PreviewPlugin[] = [
 ];
 
 export {
+  ArchivePlugin,
   PdfPlugin,
   ImagePlugin,
   JsonPlugin,

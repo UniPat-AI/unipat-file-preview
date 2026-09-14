@@ -1,9 +1,14 @@
+import type { ArchiveLimits } from './archive.js';
 import type React from 'react';
 
 export type FileSource = string | File | Blob;
 
 export interface PreviewPluginProps {
   src: FileSource;
+  archiveLimits?: Partial<ArchiveLimits> | undefined;
+  archiveDepth?: number | undefined;
+  plugins?: readonly PreviewPlugin[] | undefined;
+  disabledPlugins?: readonly string[] | undefined;
   fileType: string;
   fileName?: string | undefined;
   className?: string | undefined;
