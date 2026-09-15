@@ -27,6 +27,7 @@
     "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo"
   },
   "dependencies": {
+    "dicom-parser": "^1.8.21",
     "pdfjs-dist": "^4.6.82"
   },
   "peerDependencies": {

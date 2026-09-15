@@ -21,6 +21,7 @@
 | **音视频多媒体** | **视频**：`.mp4`, `.webm`, `.ogg`<br/>**音频**：`.mp3`, `.wav`, `.aac`, `.m4a`, `.flac` | 原生播放控件、时间轴拖拽、音量调节、全屏播放；音频带专属封面与音乐卡片展示 | HTML5 Video / Audio 原生硬件加速 |
 | **网页文档** | `.html`, `.htm` | 沙箱安全隔离展示，自适应容器宽高 | 受控空沙箱 `iframe (sandbox="")` |
 | **压缩与归档** | `.zip`, `.tar`, `.tar.gz`, `.tgz`, `.gz`<br/>*(以及 `.csv.gz`, `.tsv.gz`, `.json.gz` 等单文件流)* | 纯前端解压只读浏览、目录树导航、层级进入与返回、包内选中文件即时无缝预览；严格防范路径穿越与内存炸弹 | 浏览器原生 `DecompressionStream` |
+| **医学影像 (DICOM)** | `.dcm`, `.dicom` | 16 位医学灰度/彩色切片解析、**鼠标左键拖拽交互调窗（WW/WL）**、临床常用 CT 窗宽窗位预设（脑窗/肺窗/骨窗/腹部/纵隔）、单文件多帧切片导航（滑块/滚轮/左右方向键）、**实时 HUD 探针（显示体素坐标与 Hounsfield Unit HU 测量值）**、黑白色彩反转（Invert LUT）、DICOM Tag 详细元数据面板 | 纯前端 `dicom-parser` + HTML5 Canvas 2D |
 | **Jupyter** | `.ipynb` | Notebook 单元格结构还原、Markdown 描述展示、输入输出代码块渲染 | 专用 Notebook Viewer |
 | **其他未知格式** | *所有未匹配格式* | 优雅的文件信息卡片展示、文件类型徽标提示、一键安全下载文件到本地 | 兜底下载插件（Fallback Plugin） |
 

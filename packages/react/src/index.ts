@@ -12,6 +12,7 @@ export {
   ArchivePlugin,
   PdfPlugin,
   ImagePlugin,
+  DicomPlugin,
   JsonPlugin,
   TextPlugin,
   TablePlugin,

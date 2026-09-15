@@ -63,7 +63,7 @@ function ArchivePreview(props: PreviewPluginProps) {
     return <FilePreview key={path} src={blob} fileName={path} archiveLimits={props.archiveLimits}
       archiveDepth={archiveDepth + 1} plugins={props.plugins} disabledPlugins={props.disabledPlugins}
       allowDownload={props.allowDownload} allowOpen={props.allowOpen} allowPrint={props.allowPrint}
-      onError={props.onError} style={{ minHeight: 240, height: '100%' }} />;
+      onError={props.onError} style={{ minHeight: 0, height: '100%', flex: 1 }} />;
   }
   const current = state?.source === src ? state : undefined;
   const directories = new Set<string>();
@@ -73,8 +73,8 @@ function ArchivePreview(props: PreviewPluginProps) {
     if (slash >= 0) { if (slash > 0) directories.add(rest.slice(0, slash)); return false; }
     return Boolean(rest) && !entry.directory;
   });
-  return <section className={props.className} style={{ border: '1px solid #e5e7eb', borderRadius: 6, overflow: 'auto', ...props.style }} aria-label="压缩文件预览">
-    <div style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>压缩文件内容 · {name}（只读）</div>
+  return <section className={props.className} style={{ display: 'flex', flexDirection: 'column', border: '1px solid #e5e7eb', borderRadius: 6, overflow: 'hidden', ...props.style }} aria-label="压缩文件预览">
+    <div style={{ padding: 12, borderBottom: '1px solid #e5e7eb', flexShrink: 0 }}>压缩文件内容 · {name}（只读）</div>
     {!current && <div role="status" style={{ padding: 16 }}>正在读取压缩文件…</div>}
     {current?.error && <div role="alert" style={{ padding: 16 }}>{current.error}</div>}
     {current?.blob && child(current.blob, name.replace(/\.gz$/i, ''))}

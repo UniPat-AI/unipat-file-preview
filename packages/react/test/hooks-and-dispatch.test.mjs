@@ -35,6 +35,8 @@ test('插件匹配机制：不同文件匹配不同插件', () => {
   assert.equal(findPlugin('pdf')?.name, 'pdf');
   assert.equal(findPlugin('png')?.name, 'image');
   assert.equal(findPlugin('jpg')?.name, 'image');
+  assert.equal(findPlugin('dcm')?.name, 'dicom');
+  assert.equal(findPlugin('dicom')?.name, 'dicom');
   assert.equal(findPlugin('json')?.name, 'json');
   assert.equal(findPlugin('txt')?.name, 'text');
   assert.equal(findPlugin('csv')?.name, 'table');
